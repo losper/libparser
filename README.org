@@ -1,78 +1,15 @@
-#+TITLE: Aeolus
+#+TITLE: libcapture库
 #+OPTIONS: toc:2
 #+OPTIONS: toc:nil
 
 * 介绍
-简单的C++单元测试框架
+本项目依赖ffmpeg库，需要首先安装ffmpeg库（依赖平台）
 
-* 支持浏览器
-IE8.0以及8.0以下的版本不被支持。
+* 支持平台
+本项目支持平台如下：
+windows 桌面
+linux 桌面/ARM
+
+* 编译步骤
 
 * 快速上路
-+ 要求已经安装chrome或者Chromium
-+ 新建一个CPP文件
-+ 引入头文件aeolus.hpp
-#+BEGIN_SRC C++
-#include "aeolus.hpp"
-#+END_SRC
-+ 加入TEST()块，利用CHECK宏检查结果
-#+BEGIN_SRC C++
-TEST(add,groupname){
-    CHECK(1==(1+1));
-}
-#+END_SRC
-+ 启动测试
-测试代码是通过TestKit来启动，并将结果保存到TestResult中。
-#+BEGIN_SRC C++
-int main(){
-    TestResult tr;
-    TestKit tk;
-    tk.runAllTests(tr);
-    return 0;
-}
-#+END_SRC
-+ 完整代码
-#+BEGIN_SRC C++
-#include "aeolus.hpp"
-
-TEST(add,groupname){
-    CHECK(1==(1+1));
-}
-int main(){
-    TestResult tr;
-    TestKit::runAllTests(tr);
-    TestKit::runHtml();
-    return 0;
-}
-#+END_SRC
-+ 执行程序后，会自动打开chrome浏览器显示这次的测试结果。
-
-* 简单设置
-+ 设置启动浏览器
-#+BEGIN_SRC C++
-TestKit::setCmd("\"C:\\Program Files (x86)\\Internet Explorer\\iexplore.exe\"");
-#+END_SRC
-
-+ 设置数据生成和报告页面的路径
-#+BEGIN_SRC C++
-TestKit::setPath("D:\\dev\\msys2\\home\\hsae\\git\\Aeolus\\src\\");
-#+END_SRC
-
-+ 完整代码
-#+BEGIN_SRC C++
-#include "aeolus.hpp"
-
-TEST(add,groupname){
-    CHECK(1==(1+1));
-}
-int main(){
-    TestResult tr;
-    TestKit::setCmd("\"C:\\Program Files (x86)\\Internet Explorer\\iexplore.exe\"");
-    TestKit::setPath("D:\\dev\\msys2\\home\\hsae\\git\\Aeolus\\src\\");
-    TestKit::runAllTests(tr);
-    TestKit::runHtml();
-    return 0;
-}
-#+END_SRC
-* 浏览器中显示测试结果的例子
-[[https://github.com/losper/Aeolus/raw/master/doc/result.png]]
