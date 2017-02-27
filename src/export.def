@@ -1,0 +1,11 @@
+; capture.def : 
+
+LIBRARY      "capture"
+
+
+EXPORTS
+    ; Explicit exports can go here
+
+captureStart
+captureStop
+captureLink

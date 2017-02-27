@@ -1,0 +1,24 @@
+# Compiled Object files
+*.*
+GRTAGS
+GTAGS
+GPATH
+!*.c
+!*.cpp
+!*.hpp
+!*.h
+!*.js
+!*.css
+!report.html
+!*.yml
+!*.def
+!*.md
+!*.org
+!*CMakeLists.txt
+!build.bat
+!build.sh
+!*.png
+!.gitignore
+/binary
+/build
+.#*
