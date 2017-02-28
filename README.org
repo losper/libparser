@@ -11,5 +11,17 @@ windows 桌面
 linux 桌面/ARM
 
 * 编译步骤
-
++ arm-linux
+mkdir build
+cd build
+cmake ../ -DCMAKE_TOOLCHAIN_FILE=../cmake/arm.cmake
++ linux
+mkdir build
+cd build
+cmake ../
++windows
+windows下vs版本众多，CMAKE的生成器也较多，下面举例msvc2015。
+mkdir build
+cd build
+cmake ../ -G "Visual Studio 14 2015 Win64"
 * 快速上路
