@@ -25,3 +25,9 @@ mkdir build
 cd build
 cmake ../ -G "Visual Studio 14 2015 Win64"
 * 快速上路
+* FAQ
++ arm-linux出现编译不过的时候
+如果是如下字样，请现删除build文件夹，重新编译。
+ Manually-specified variables were not used by the project:
+    CMAKE_TOOLCHAIN_FILE
+原因是已经在其他配置上生成过，无法再使用该选项进行生成。

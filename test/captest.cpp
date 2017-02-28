@@ -1,4 +1,4 @@
-#ifdef	__cplusplus
+ï»¿#ifdef	__cplusplus
 extern "C"
 {
 #endif
@@ -23,12 +23,12 @@ extern "C"
 };
 #endif
 #define OUTPUT_YUV420P 1
-int main() {
+int main(int argc,char** argv) {
 	av_register_all();
 	avdevice_register_all();
 
 	AVFormatContext	*pFormatCtx_Video = NULL;
-	AVInputFormat *ifmt = av_find_input_format("gdigrab");
+	AVInputFormat *ifmt = 0;
 	AVDictionary *options = NULL;
 	AVCodecContext	*pCodecCtx_Video;
 	AVCodec			*pCodec_Video;
@@ -37,7 +37,12 @@ int main() {
 	SwsContext *img_convert_ctx;
 	int frame_size = 0;
 
-
+	if (argc == 1)
+	{
+		ifmt = av_find_input_format("gdigrab");
+	}else {
+		ifmt = av_find_input_format("fbdev");
+	}
 	av_dict_set(&options, "framerate", "15", NULL);
 	//av_dict_set(&options,"offset_x","20",0);
 	//The distance from the top edge of the screen or desktop
@@ -46,19 +51,19 @@ int main() {
 	av_dict_set(&options, "video_size", "800x400", 0);
 	if (avformat_open_input(&pFormatCtx_Video, "desktop", ifmt, &options) != 0)
 	{
-		printf("Couldn't open input stream.£¨ÎŞ·¨´ò¿ªÊÓÆµÊäÈëÁ÷£©\n");
+		printf("Couldn't open input stream.ï¼ˆæ— æ³•æ‰“å¼€è§†é¢‘è¾“å…¥æµï¼‰\n");
 		return 0;
 	}
 	if (avformat_find_stream_info(pFormatCtx_Video, NULL) < 0)
 	{
-		printf("Couldn't find stream information.£¨ÎŞ·¨»ñÈ¡ÊÓÆµÁ÷ĞÅÏ¢£©\n");
+		printf("Couldn't find stream information.ï¼ˆæ— æ³•è·å–è§†é¢‘æµä¿¡æ¯ï¼‰\n");
 		return 0;
 	}
 
 
 	if (pFormatCtx_Video->streams[0]->codecpar->codec_type != AVMEDIA_TYPE_VIDEO)
 	{
-		printf("Couldn't find video stream information.£¨ÎŞ·¨»ñÈ¡ÊÓÆµÁ÷ĞÅÏ¢£©\n");
+		printf("Couldn't find video stream information.ï¼ˆæ— æ³•è·å–è§†é¢‘æµä¿¡æ¯ï¼‰\n");
 		return 0;
 	}
 
@@ -73,12 +78,12 @@ int main() {
 	pCodec_Video = avcodec_find_decoder(pCodecCtx_Video->codec_id);
 	if (pCodec_Video == NULL)
 	{
-		printf("Codec not found.£¨Ã»ÓĞÕÒµ½½âÂëÆ÷£©\n");
+		printf("Codec not found.ï¼ˆæ²¡æœ‰æ‰¾åˆ°è§£ç å™¨ï¼‰\n");
 		return 0;
 	}
 	if (avcodec_open2(pCodecCtx_Video, pCodec_Video, NULL) < 0)
 	{
-		printf("Could not open codec.£¨ÎŞ·¨´ò¿ª½âÂëÆ÷£©\n");
+		printf("Could not open codec.ï¼ˆæ— æ³•æ‰“å¼€è§£ç å™¨ï¼‰\n");
 		return 0;
 	}
 
@@ -86,7 +91,7 @@ int main() {
 		pCodecCtx_Video->width, pCodecCtx_Video->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL);
 
 	frame_size = avpicture_get_size(AV_PIX_FMT_YUV420P, pCodecCtx_Video->width, pCodecCtx_Video->height);
-	//ÉêÇë30Ö¡»º´æ
+	//ç”³è¯·30å¸§ç¼“å­˜
 	//fifo_video = av_fifo_alloc(30 * avpicture_get_size(AV_PIX_FMT_YUV420P, pCodecCtx_Video->width, pCodecCtx_Video->height));
 	AVFrame *pFrame, *pFrameYUV;
 	pFrame = av_frame_alloc();
