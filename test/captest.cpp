@@ -22,6 +22,8 @@ extern "C"
 #ifdef __cplusplus
 };
 #endif
+#include <string.h>
+#include <errno.h>
 #define OUTPUT_YUV420P 1
 int main(int argc,char** argv) {
 	av_register_all();
@@ -49,7 +51,7 @@ int main(int argc,char** argv) {
 	//av_dict_set(&options,"offset_y","40",0);
 	//Video frame size. The default is to capture the full screen
 	av_dict_set(&options, "video_size", "800x400", 0);
-	if (avformat_open_input(&pFormatCtx_Video, "desktop", ifmt, &options) != 0)
+	if (avformat_open_input(&pFormatCtx_Video, "/dev/fb0", ifmt, &options) != 0)
 	{
 		printf("Couldn't open input stream.（无法打开视频输入流）\n");
 		return 0;
@@ -130,7 +132,10 @@ int main(int argc,char** argv) {
 	//avpicture_fill((AVPicture*)pFrameYUV, yuv_data, AV_PIX_FMT_YUV420P, pCodecCtx_Video->width, pCodecCtx_Video->height);
 
 #if OUTPUT_YUV420P
-	FILE *fp_yuv = fopen("f:/test/output.yuv", "wb+");
+	FILE *fp_yuv = fopen("output.yuv", "wb");
+	if(fp_yuv==NULL){
+	  printf("fopen error:%s\r\n",strerror(errno));
+	}
 #endif 
 	for (;;) {
 		if (av_read_frame(pFormatCtx_Video, &packet) >= 0) {
