@@ -5,8 +5,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 include_directories(../src)
-include_directories(${CMAKE_LOCAL_DIRECTORY}/include)
-LINK_DIRECTORIES (${CMAKE_LOCAL_DIRECTORY}/lib)
 
 ## 添加项目
 #ADD_EXECUTABLE(test_simple simple.cpp)

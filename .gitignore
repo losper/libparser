@@ -19,6 +19,7 @@ GPATH
 !build.sh
 !*.png
 !.gitignore
+!/cmake/*.cmake
 /binary
 /build
 .#*
