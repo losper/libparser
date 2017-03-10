@@ -3,7 +3,7 @@
 #+OPTIONS: toc:nil
 
 * 介绍
-本项目依赖ffmpeg库，需要首先安装ffmpeg库（依赖平台）
+本项目用来解析XML，css，html，json等
 
 * 支持平台
 本项目支持平台如下：

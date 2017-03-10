@@ -1,0 +1,103 @@
+#+TITLE: XML解析图示
+#+OPTIONS: toc:2
+#+OPTIONS: toc:nil
+
+* 解析状态说明
+处理位置：
+内容长度：
+解析开始：
+解析结束：
+元素开始：
+元素结束：
+属性名开始：
+属性名结束：
+属性值开始：
+属性值结束：
+文本：
+非解析内容：
+解析异常：
+* 解析主流程说明
+#+BEGIN_SRC plantuml :file xmlparser.svg
+start
+while(处理位置小于内容长度)
+if (解析开始) then (yes)
+  :解析开始处理;
+elseif (解析结束) then (yes)
+  :解析结束处理;
+  stop
+elseif (元素开始) then (yes)
+  :元素开始处理;
+elseif (元素结束) then (yes)
+  :元素结束处理;
+elseif(元素名开始)then(yes)
+  :元素名开始处理;
+elseif(元素名结束)then(yes)
+  :元素名结束处理;
+elseif(属性名开始)then(yes)
+  :属性名开始处理;
+elseif(属性名结束)then(yes)
+  :属性名结束处理;
+elseif(属性值开始)then(yes)
+  :属性值开始处理;
+elseif(属性值结束)then(yes)
+  :属性值结束处理;
+elseif(文本)then(yes)
+  :文本处理;
+elseif(非解析内容)then(yes)
+  :非解析内容处理;
+else (解析异常)
+  :解析异常处理;
+  stop
+endif
+endwhile
+stop
+#+END_SRC
+* 解析开始处理
+#+BEGIN_SRC plantuml :file xml-parser-start.svg
+start
+if(查找字符<)then(查找成功)
+  :设置状态为元素开始;
+  :处理位置后移一位;
+else
+  :设置状态为解析异常;
+endif
+stop
+#+END_SRC
+* 解析结束处理
+#+BEGIN_SRC plantuml :file xml-parser-end.svg
+start
+:初始内容占用，为下一次解析做准备;
+stop
+#+END_SRC
+* 元素开始处理
+#+BEGIN_SRC plantuml :file xml-element-start.svg
+start
+
+:记录字符位置为当前字符串开始位置(strStart);
+if(当前字符属于A-Za-z1-9)then(yes)
+  :设置状态为元素名开始;
+else
+  :设置状态为解析异常;
+endif
+stop
+#+END_SRC
+* 元素结束处理
+
+* 元素名开始处理
+#+BEGIN_SRC plantuml :file xml-elementname-start.svg
+start
+if(当前字符是>)then(yes)
+  :设置状态为元素名结束;
+elseif(当前字符是/)then(yes)
+  if(后一位字符是>)then(yes)
+  :设置状态为元素结束;
+  else
+  :设置状态为解析异常;
+  endif
+elseif(当前字符是空格)
+  
+else
+  :处理位置后移;
+endif
+stop
+#+END_SRC

@@ -7,7 +7,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 ## 添加项目
 
 if(MSVC)
-	ADD_LIBRARY(capture SHARED capture.h capture.cpp export.def)	
+	ADD_LIBRARY(parser SHARED capture.h capture.cpp export.def)	
 else()
 	ADD_LIBRARY(capture SHARED capture.h capture.cpp)
 endif()
