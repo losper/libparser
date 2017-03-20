@@ -1,11 +1,15 @@
-; capture.def : 
+; export.def : 
 
-LIBRARY      "capture"
+LIBRARY      "parser"
 
 
 EXPORTS
     ; Explicit exports can go here
 
-captureStart
-captureStop
-captureLink
+jsonCreate
+jsonFree
+jsonParse
+jsonGetString
+jsonGetNumber
+jsonSetString
+jsonSetNumber

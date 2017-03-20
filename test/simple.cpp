@@ -1,29 +1,20 @@
-#include "windows.h"
-#include <map>
-#include <list>
-#include <string>
-enum json_type {
-	enum_string,
-	enum_number,
-	enum_array,
-	enum_object,
-	enum_null,
-};
-class json_object {
-private:
-	json_type type;
-	std::map<std::string, json_object> sjo;
-};
+#include "aeolus/aeolus.hpp"
+#include "../src/jsonexport.h"
 
-json_object json_parser(const char* buf) {
-
+TEST(a,b) {
+	void* json = jsonCreate();
+	jsonParse(json, "{\"imx\":{\"class\":\"haa\",\"sum\":\"123\",\"age\":1234,\"bb\":234.369}}", 0);
+	CHECK(!strcmp("haa",jsonGetString(json, "imx.class")));
+	CHECK(!strcmp("123", jsonGetString(json, "imx.sum")));
+	CHECK(1234==jsonGetNumber(json, "imx.age"));
+	CHECK(234.369==jsonGetNumber(json, "imx.bb"));
+	jsonFree(json);
 }
-int main() {
-	char* buf = "{'imx':{'name':'liuwenjun','sex':'male','class':'3-2','age':20},'alist':[1,2,3,4,5],'blist':['123','e45','543']}";
-	json_t obj=json_parser(buf);
-	char* name=json_getstring(obj,"imx.name");
-	int value = json_getint(obj,"imx.age");
-	json_getlist(obj,"alist");
 
+int main() {
+	
+	TestResult tr;
+	TestKit::runAllTests(tr);
+	TestKit::runHtml();
 	return 0;
 }
