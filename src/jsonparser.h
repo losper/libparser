@@ -35,6 +35,7 @@ private:
 	void json_object_end_f();
 	void json_string_start_f();
 	void json_number_start_f();
+	void json_array_start_f();
 	void json_value_end_f();
 	void json_split_kv_f();
 	

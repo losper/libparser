@@ -205,8 +205,6 @@ void jsonParser::json_string_start_f()
 }
 void jsonParser::json_number_start_f()
 {
-	/*double before_num=0,after_num=0;
-	int negative = 0,dot = 0,count=0;*/
 	double num=0;
 	state = json_parse_error;
 	char* endptr;
@@ -228,63 +226,44 @@ void jsonParser::json_number_start_f()
 		default:
 			return;
 	}
-	/*while (buff[idx])
+}
+void jsonParser::json_array_start_f()
+{
+	state = json_parse_error;
+	switch (ptr->getType()) {
+	case type_array:
 	{
-		switch (buff[idx])
-		{
-		case '-':
-			if (negative) {
-				state = json_parse_error;
-				return;
-			}
-			negative = 1;
-			break;
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-			if (dot) {
-				count++;
-				after_num = after_num * 10 + (buff[idx] - '0'); 
-			}
-			else {
-				before_num = before_num * 10 + (buff[idx] - '0');
-			}
-			break;
-		case '.':
-			if (dot) {
-				state = json_parse_error;
-				return;
-			}
-			dot = 1;
-			break;
-		case '}':
-		case ']':
-		case ',':
-		case ' ':
-			state = json_number_end;
-			idx--;
-			after_num = 10 ^ count;
-			before_num = after_num?after_num/(10^count):0;
-			before_num = negative ? before_num*-1 : before_num;
-			if (ptr->getType() == type_object) {
-				ptr->insert(tmpname, jsonValue(before_num));
-			}
-			else {
-				ptr->pushBack(jsonValue(before_num));
-			}
-			return ;
-		default:
+		jsonValue& arr = ptr->pushBack(jsonValue(jsonArray()));
+		if (arr.getType() != type_null) {
+			arr.parent(*ptr);
+			ptr = &arr;
+		}
+		else {
 			return;
 		}
-		idx++;
-	}*/
+
+	}
+	break;
+	case type_object:
+	{
+		jsonValue& obj = ptr->insert(tmpname, jsonValue(jsonArray()));
+		if (obj.getType() != type_null) {
+			obj.parent(*ptr);
+			ptr = &obj;
+		}
+		else {
+			return;
+		}
+	}
+	break;
+	case type_undefined:
+		*ptr = jsonValue(jsonArray());
+		break;
+	default:
+		break;
+	}
+	state=json_split_start;
+	idx--;
 }
 void jsonParser::json_value_end_f()
 {
@@ -336,7 +315,7 @@ void jsonParser::json_value_end_f()
 				else {
 					state = json_parse_end;
 				}
-				break;
+				return ;
 			default:
 				return;
 			}
@@ -407,7 +386,7 @@ int jsonParser::parseBuff(const char* buf)
 			json_value_end_f();
 			break;
 		case json_array_start:
-			
+			json_array_start_f();
 			break;
 		case json_array_end:
 			json_value_end_f();
