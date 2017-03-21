@@ -139,22 +139,22 @@ jsonValue& jsonValue::find(std::string path) {
 	{
 		size_t pos = 0, start = 0;
 		std::string name;
-		jsonObject::iterator iter;
-		jsonValue* ptr = this;
+		jsonObject::iterator iter,end;
 		while (pos != -1)
 		{
 			pos = path.find('.', start);
 			name = path.substr(start, pos);
 			if (start) {
-				iter = iter->second.value.object->find(name);
+				end = iter->second.value.object->end();
+				iter = iter->second.value.object->find(name);	
 			}
 			else {
-				iter = ptr->value.object->find(name);
-				ptr = &iter->second;
+				end = value.object->end();
+				iter = value.object->find(name);
 			}
 			start = pos + 1;
 		}
-		if (iter != ptr->value.object->end()) {
+		if (iter != end) {
 			return iter->second;
 		}
 		return nullvalue;

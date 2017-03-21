@@ -1,5 +1,7 @@
 #include "jsonparser.h"
 #include "jsonvalue.h"
+#include <fstream>
+
 
 int jsonParse(void* json,const char* path,int type) {
 	if (json)
@@ -44,11 +46,6 @@ jsonParser::jsonParser(jsonValue & obj):root(obj)
 	state = json_parse_start;
 }
 
-int jsonParser::parseFile(const char* file)
-{
-	
-	return 0;
-}
 void jsonParser::json_parse_start_f() {
 	while (buff[idx])
 	{
@@ -404,6 +401,32 @@ int jsonParser::parseBuff(const char* buf)
 			break;
 		}
 		idx++;
+	}
+	return 0;
+}
+int jsonParser::parseFile(const char* file)
+{
+	FILE *fs = fopen(file, "rb");
+	char buf[1024];
+	long len=0;
+	if (fs)
+	{
+		fseek(fs, 0, SEEK_END);
+		len = ftell(fs);
+		fseek(fs, 0, SEEK_SET);
+		while (len) {			
+			if (len < 1024) {
+				fread(buf, 1, len, fs);
+				buf[len] = 0;
+				len = 0;
+			}
+			else {
+				fread(buf, 1, 1024, fs);
+				buf[1024] = 0;
+				len = len - 1024;
+			}
+			parseBuff(buf);
+		}
 	}
 	return 0;
 }

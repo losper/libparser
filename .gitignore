@@ -1,8 +1,6 @@
 # Compiled Object files
 *.*
-GRTAGS
-GTAGS
-GPATH
+*
 !*.c
 !*.cpp
 !*.hpp

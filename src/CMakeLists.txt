@@ -11,3 +11,11 @@ if(MSVC)
 else()
 	ADD_LIBRARY(parser SHARED jsonexport.h jsonparser.h jsonparser.cpp jsonvalue.h jsonvalue.cpp)
 endif()
+
+install(TARGETS parser
+RUNTIME DESTINATION bin
+LIBRARY DESTINATION lib
+ARCHIVE DESTINATION lib
+)
+install(DIRECTORY ./ DESTINATION include/parser
+         FILES_MATCHING PATTERN "*.h")
