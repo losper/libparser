@@ -357,7 +357,7 @@ int jsonParser::parseBuff(const char* buf)
 			continue ;
 		case json_parse_error:
 			json_parse_error_f();
-			return 0;
+			return -1;
 			break;
 		case json_name_start:
 			json_name_start_f();
