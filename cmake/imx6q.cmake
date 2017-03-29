@@ -14,6 +14,7 @@ SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 # for libraries and headers in the target directories
 SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+add_definitions(-Darm)
 
 # configure Boost and Qt
 #SET(QT_QMAKE_EXECUTABLE /opt/qt-embedded/qmake)

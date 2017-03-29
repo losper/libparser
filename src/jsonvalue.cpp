@@ -3,7 +3,7 @@
 std::string jsonValue::nullstring;
 jsonValue jsonValue::nullvalue(type_null);
 
-jsonValue & jsonValue::operator=(jsonValue & val)
+jsonValue & jsonValue::operator=(const jsonValue & val)
 {
 	// TODO: 在此处插入 return 语句
 	freeStorge();
