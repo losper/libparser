@@ -1,6 +1,7 @@
 #include "jsonparser.h"
 #include "jsonvalue.h"
 #include <fstream>
+#include <string.h>
 
 
 int jsonParse(void* json,const char* path,int type) {
@@ -131,7 +132,9 @@ void jsonParser::json_object_start_f()
 	switch (ptr->getType()) {
 		case type_array:
 			{
-				jsonValue& arr = ptr->pushBack(jsonValue(jsonObject()));
+				jsonObject tobj;
+				jsonValue tval(tobj);
+				jsonValue& arr = ptr->pushBack(tval);
 				if (arr.getType() != type_null) {
 					arr.parent(*ptr);
 					ptr = &arr;
@@ -144,7 +147,9 @@ void jsonParser::json_object_start_f()
 			break;
 		case type_object:
 			{
-				jsonValue& obj = ptr->insert(tmpname, jsonValue(jsonObject()));
+				jsonObject tobj;
+				jsonValue tval(tobj);
+				jsonValue& obj = ptr->insert(tmpname, tval);
 				if (obj.getType() != type_null) {
 					obj.parent(*ptr);
 					ptr = &obj;
@@ -154,8 +159,13 @@ void jsonParser::json_object_start_f()
 				}
 			}
 			break;
-		case type_undefined:
-			*ptr = jsonValue(jsonObject());
+		case type_undefined: 
+			{
+				jsonObject tobj;
+				jsonValue tval(tobj);
+				*ptr = tval;
+
+			}
 			break;
 		default:
 			break;
@@ -185,14 +195,15 @@ void jsonParser::json_string_start_f()
 	const char* end=strchr(buff+idx,'"');
 	if (end) {
 		std::string ctx;
+		jsonValue tval(ctx);
 		ctx.append(buff + idx, end);
 		idx = end - buff;
 		state = json_string_end;
 		if (ptr->getType() == type_object) {
-			ptr->insert(tmpname, jsonValue(ctx));
+			ptr->insert(tmpname, tval);
 		}
 		else {
-			ptr->pushBack(jsonValue(ctx));
+			ptr->pushBack(tval);
 		}
 	}
 	else {
@@ -211,13 +222,17 @@ void jsonParser::json_number_start_f()
 		case ']':
 		case ',':
 		case ' ':
-			state = json_number_end;
-			idx=endptr-buff-1;
-			if (ptr->getType() == type_object) {
-				ptr->insert(tmpname, jsonValue(num));
-			}
-			else {
-				ptr->pushBack(jsonValue(num));
+			{
+				state = json_number_end;
+				idx = endptr - buff - 1;
+				jsonValue tval(num);
+				if (ptr->getType() == type_object) {
+					ptr->insert(tmpname, tval);
+				}
+				else {
+					ptr->pushBack(tval);
+				}
+
 			}
 			return;
 		default:
@@ -230,7 +245,9 @@ void jsonParser::json_array_start_f()
 	switch (ptr->getType()) {
 	case type_array:
 	{
-		jsonValue& arr = ptr->pushBack(jsonValue(jsonArray()));
+		jsonArray tarr;
+		jsonValue tval(tarr);
+		jsonValue& arr = ptr->pushBack(tval);
 		if (arr.getType() != type_null) {
 			arr.parent(*ptr);
 			ptr = &arr;
@@ -243,7 +260,9 @@ void jsonParser::json_array_start_f()
 	break;
 	case type_object:
 	{
-		jsonValue& obj = ptr->insert(tmpname, jsonValue(jsonArray()));
+		jsonArray tarr;
+		jsonValue tval(tarr);
+		jsonValue& obj = ptr->insert(tmpname, tval);
 		if (obj.getType() != type_null) {
 			obj.parent(*ptr);
 			ptr = &obj;
@@ -254,7 +273,12 @@ void jsonParser::json_array_start_f()
 	}
 	break;
 	case type_undefined:
-		*ptr = jsonValue(jsonArray());
+		{
+			jsonArray tarr;
+			jsonValue tval(tarr);
+			*ptr = tval;
+
+		}
 		break;
 	default:
 		break;

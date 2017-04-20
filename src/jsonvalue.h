@@ -20,7 +20,7 @@ typedef std::map<std::string, jsonValue> jsonObject;
 typedef std::vector<jsonValue> jsonArray;
 class jsonValue {
 public:
-	jsonValue& operator=(jsonValue& val);
+	jsonValue& operator=(const jsonValue& val);
 	jsonValue();
 	jsonValue(json_type);
 	jsonValue(const jsonValue& val);

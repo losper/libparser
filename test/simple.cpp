@@ -1,5 +1,6 @@
 #include "aeolus/aeolus.hpp"
 #include "../src/jsonexport.h"
+#include "string.h"
 
 
 TEST(jsoncheck1,json) {
@@ -38,7 +39,6 @@ TEST(file,json) {
 	jsonFree(json);
 }
 int main() {
-	
 	TestResult tr;
 	TestKit::runAllTests(tr);
 	TestKit::runHtml();
