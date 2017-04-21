@@ -195,8 +195,8 @@ void jsonParser::json_string_start_f()
 	const char* end=strchr(buff+idx,'"');
 	if (end) {
 		std::string ctx;
-		jsonValue tval(ctx);
 		ctx.append(buff + idx, end);
+		jsonValue tval(ctx);
 		idx = end - buff;
 		state = json_string_end;
 		if (ptr->getType() == type_object) {
@@ -452,5 +452,10 @@ int jsonParser::parseFile(const char* file)
 			parseBuff(buf);
 		}
 	}
+	else {
+		printf("parseFile error\r\n");
+		return -1;
+	}
+	printf("parseFile ok\r\n");
 	return 0;
 }

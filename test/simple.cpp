@@ -33,7 +33,7 @@ TEST(jsoncheck3, b) {
 }
 TEST(file,json) {
 	void* json = jsonCreate();
-	jsonParse(json, "../../test/json/prop.json" ,1);
+	jsonParse(json, "../test/json/prop.json" ,1);
 	CHECK(2345 == jsonGetNumber(json, "port"));
 	CHECK(!strcmp("127.0.0.1",jsonGetString(json, "ip")));
 	jsonFree(json);

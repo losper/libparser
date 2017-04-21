@@ -188,18 +188,22 @@ jsonValue& jsonValue::at(size_t pos) {
 std::string& jsonValue::tostring() {
 	if (type == type_string)
 	{
+		
 		return *value.string;
 	}
 	else {
+		
 		return nullstring;
 	}
 }
 double jsonValue::tonumber() {
 	if (type == type_number)
 	{
+		
 		return value.number;
 	}
-	else {
+	else{
+		
 		return 0;
 	}
 }
