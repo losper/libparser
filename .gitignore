@@ -3,7 +3,9 @@
 *
 !doc/
 !src/
+!cmake/
 !test/
+!*.cmake
 !*.c
 !*.cpp
 !*.hpp
@@ -19,4 +21,3 @@
 !*.sh
 !*.png
 !.gitignore
-!/cmake/*.cmake
