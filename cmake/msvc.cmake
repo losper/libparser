@@ -1,0 +1,3 @@
+set(CMAKE_LOCAL_DIRECTORY e:/usr/local)
+include_directories(${CMAKE_LOCAL_DIRECTORY}/include)
+LINK_DIRECTORIES (${CMAKE_LOCAL_DIRECTORY}/lib)
