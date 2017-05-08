@@ -3,11 +3,11 @@ SET(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 # specify the cross compiler
-SET(CMAKE_C_COMPILER /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-none-linux-gnueabi-gcc)
-SET(CMAKE_CXX_COMPILER /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-none-linux-gnueabi-g++)
+SET(CMAKE_C_COMPILER /opt/Sourcery_CodeBench_for_ARM_Embedded/bin/arm-none-linux-gnueabi-gcc)
+SET(CMAKE_CXX_COMPILER /opt/Sourcery_CodeBench_for_ARM_Embedded/bin/arm-none-linux-gnueabi-g++)
 
 # where is the target environment 
-SET(CMAKE_FIND_ROOT_PATH  /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/)
+SET(CMAKE_FIND_ROOT_PATH  /opt/Sourcery_CodeBench_for_ARM_Embedded/)
 SET(CMAKE_EXT_LIBRARAY_PATH  /home/hs/workspace/build/tmp/sysroots/mx6q/usr)
 # search for programs in the build host directories (not necessary)
 SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
