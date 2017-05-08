@@ -1,7 +1,7 @@
 #include "jsonparser.h"
 #include "jsonvalue.h"
 #include <fstream>
-#include <string.h>
+#include <stdlib.h>
 
 
 int jsonParse(void* json,const char* path,int type) {
@@ -25,7 +25,7 @@ void * jsonCreate()
 }
 void jsonFree(void* json)
 {
-	delete json;
+	delete (jsonValue*)json;
 }
 const char* jsonGetString(void* json,const char* path) {
 	return ((jsonValue*)json)->find(path).tostring().c_str();
