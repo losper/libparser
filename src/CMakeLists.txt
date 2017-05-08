@@ -1,4 +1,4 @@
-﻿#cmake file for project association
+#cmake file for project association
 #author: liuwenjun
 #created:2014/02/20
 
