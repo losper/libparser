@@ -37,7 +37,7 @@ jsonValue & jsonValue::operator=(const jsonValue & val)
 
 jsonValue::jsonValue() {
 	type = type_undefined;
-	value.number = NULL;
+	value.number = 0;
 	parent_ptr = 0;
 }
 jsonValue::jsonValue(json_type jt) {
