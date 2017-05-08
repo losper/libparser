@@ -1,8 +1,8 @@
 #include "jsonparser.h"
 #include "jsonvalue.h"
 #include <fstream>
+#include <string.h>
 #include <stdlib.h>
-
 
 int jsonParse(void* json,const char* path,int type) {
 	if (json)
