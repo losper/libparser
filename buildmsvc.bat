@@ -1,5 +1,4 @@
 echo "generate this project"
-echo on
 rd msvcbuild /S/Q
 mkdir msvcbuild
 cd msvcbuild
@@ -12,7 +11,6 @@ goto :no
 :yes
 cmake ../ -G "%GENERATOR%" -DCMAKE_TOOLCHAIN_FILE=../cmake/msvc.cmake
 cmake --build ./ --target INSTALL
-pause
 goto :eof
 
 :no
