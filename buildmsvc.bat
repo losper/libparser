@@ -1,5 +1,5 @@
 echo "generate this project"
-rd msvcbuild /S/Q
+if exist msvcbuild rd msvcbuild /S/Q
 mkdir msvcbuild
 cd msvcbuild
 rem cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug
