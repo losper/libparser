@@ -9,3 +9,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 ADD_EXECUTABLE(libparsertest simple.cpp)
 target_link_libraries(libparsertest parser)
+
+if(MSVC)
+set(WINTEST libparsertest)
+set_target_properties(${WINTEST} PROPERTIES FOLDER "tests/parser")
+endif()
