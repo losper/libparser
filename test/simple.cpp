@@ -33,7 +33,31 @@ TEST(jsoncheck3, b) {
 }
 TEST(file,json) {
 	void* json = jsonCreate();
-	jsonParse(json, "../test/json/prop.json" ,1);
+	void* tmp=0;
+	jsonSetString(json, "ip", "127.0.0.1");
+	jsonSetNumber(json, "port", 2345);
+	jsonAddArray(json, "arr");
+	tmp = jsonGetValue(json, "arr");
+	jarrPushNumber(tmp, 123);
+	jarrPushString(tmp, "456");
+	jsonSave(json, "test.json");
+	jsonFree(json);
+	
+	json = jsonCreate();
+	jsonParse(json, "test.json", 1);
+	
+	/*jsonAddObject();
+	jsonPushArray();
+	
+	jsonPushObject();
+	
+	*/
+	/*jsonGetType();
+	jsonNext(tmp);*/
+	tmp = jsonGetValue(json, "arr");
+	CHECK(123 == jsonToNumber(jarrGetValue(tmp, 0)));
+	CHECK(!strcmp("456", jsonToString(jarrGetValue(tmp, 1))));
+	//jarrGetSize(tmp);
 	CHECK(2345 == jsonGetNumber(json, "port"));
 	CHECK(!strcmp("127.0.0.1",jsonGetString(json, "ip")));
 	jsonFree(json);

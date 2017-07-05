@@ -214,11 +214,17 @@ void jsonValue::freeStorge()
 {
 	switch (type) {
 	case type_array:
+		for (jsonArray::iterator iter = value.array->begin(); iter != value.array->end(); iter++) {
+			iter->freeStorge();
+		}
 		delete value.array;
 		value.array = 0;
 		type = type_undefined;
 		break;
 	case type_object:
+		for (jsonObject::iterator iter = value.object->begin(); iter != value.object->end(); iter++) {
+			iter->second.freeStorge();
+		}
 		delete value.object;
 		value.object = 0;
 		type = type_undefined;
@@ -234,6 +240,52 @@ void jsonValue::freeStorge()
 	default:
 		break;
 	}
+}
+std::string jsonValue::serialize()
+{
+	std::string ctx = "";
+	int flag = 0;
+	switch (getType())
+	{
+	case type_string:
+		ctx += "\"";
+		ctx.append(*value.string);
+		ctx += "\"";
+		break;
+	case type_number:
+		{
+			std::ostringstream ost;
+			if (ost << value.number)
+				ctx.append(ost.str());
+		}
+		break;
+	case type_array:
+		ctx.append("[");
+		for (jsonArray::iterator iter = value.array->begin(); iter != value.array->end(); iter++)
+		{
+			if (flag) { ctx += ","; }
+			else { flag = 1; }
+			ctx.append(iter->serialize());
+		}
+		ctx.append("]");
+		break;
+	case type_object:
+		ctx.append("{");
+		for (jsonObject::iterator iter = value.object->begin(); iter != value.object->end(); iter++)
+		{
+			if (flag) { ctx += ","; }
+			else { flag = 1; }
+			ctx += "\"";
+			ctx.append(iter->first);
+			ctx += "\":";
+			ctx.append(iter->second.serialize());
+		}
+		ctx.append("}");
+		break;
+	default:
+		break;
+	}
+	return ctx;
 }
 json_type jsonValue::getType() {
 	return this->type;

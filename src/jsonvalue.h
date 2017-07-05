@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 enum json_type {
 	type_undefined,
@@ -40,6 +41,7 @@ public:
 	double tonumber();
 	virtual ~jsonValue();
 	void freeStorge();
+	std::string serialize();
 private:
 	json_type type;
 	int len;

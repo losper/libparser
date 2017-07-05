@@ -6,6 +6,7 @@ LIBRARY      "parser"
 EXPORTS
     ; Explicit exports can go here
 
+jsonSave
 jsonCreate
 jsonFree
 jsonParse
@@ -13,3 +14,10 @@ jsonGetString
 jsonGetNumber
 jsonSetString
 jsonSetNumber
+jsonAddArray
+jsonGetValue
+jarrPushString
+jarrPushNumber
+jarrGetValue
+jsonToString
+jsonToNumber
