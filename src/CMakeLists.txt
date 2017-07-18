@@ -7,9 +7,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 ## 添加项目
 
 if(MSVC)
-	ADD_LIBRARY(parser SHARED jsonexport.h jsonparser.h jsonparser.cpp jsonvalue.h jsonvalue.cpp export.def)	
+	ADD_LIBRARY(parser SHARED jsonexport.h jsondef.h jsonparser.hpp jsonsrc.cpp jsonvalue.hpp export.def )	
 else()
-	ADD_LIBRARY(parser SHARED jsonexport.h jsonparser.h jsonparser.cpp jsonvalue.h jsonvalue.cpp)
+	ADD_LIBRARY(parser SHARED jsonexport.h jsondef.h jsonparser.hpp jsonsrc.cpp jsonvalue.hpp )
 endif()
 
 install(TARGETS parser
