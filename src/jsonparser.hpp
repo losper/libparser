@@ -124,13 +124,29 @@ public:
 	}
 
 private:
-	void jsonParser::json_parse_start_f() {
+	void skip() {
 		while (buff[idx])
 		{
 			switch (buff[idx])
 			{
 			case ' ':
-				break;
+			case '\r':
+			case '\n':
+			case '\t':
+				idx++;
+				continue;
+			default:
+				return ;
+			}
+		}
+		
+	}
+	void jsonParser::json_parse_start_f() {
+		skip();
+		while (buff[idx])
+		{
+			switch (buff[idx])
+			{
 			case '{':
 				state = json_object_start;
 				return;
@@ -164,11 +180,10 @@ private:
 	}
 	void jsonParser::json_name_end_f()
 	{
+		skip();
 		while (buff[idx])
 		{
 			switch (buff[idx]) {
-			case ' ':
-				break;
 			case ':':
 				state = json_split_start;
 				return;
@@ -181,11 +196,10 @@ private:
 	}
 	void jsonParser::json_split_start_f()
 	{
+		skip();
 		while (buff[idx])
 		{
 			switch (buff[idx]) {
-			case ' ':
-				break;
 			case '"':
 				state = json_string_start;
 				return;
@@ -247,13 +261,11 @@ private:
 		default:
 			break;
 		}
+		skip();
 		while (buff[idx])
 		{
 			switch (buff[idx])
 			{
-			case ' ':
-				continue;
-				break;
 			case '"':
 				state = json_name_start;
 				return;
@@ -369,13 +381,11 @@ private:
 		switch (ptr->getType())
 		{
 		case type_object:
+			skip();
 			while (buff[idx])
 			{
 				switch (buff[idx])
 				{
-				case ' ':
-					continue;
-					break;
 				case ',':
 					state = json_split_kv;
 					return;
@@ -395,13 +405,11 @@ private:
 			}
 			break;
 		case type_array:
+			skip();
 			while (buff[idx])
 			{
 				switch (buff[idx])
 				{
-				case ' ':
-					continue;
-					break;
 				case ',':
 					state = json_split_start;
 					return;
@@ -428,13 +436,11 @@ private:
 	void jsonParser::json_split_kv_f()
 	{
 		state = json_parse_error;
+		skip();
 		while (buff[idx])
 		{
 			switch (buff[idx])
 			{
-			case ' ':
-				continue;
-				break;
 			case '"':
 				state = json_name_start;
 				return;

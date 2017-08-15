@@ -18,4 +18,6 @@ LIBRARY DESTINATION lib
 ARCHIVE DESTINATION lib
 )
 install(DIRECTORY ./ DESTINATION include/parser
+         FILES_MATCHING PATTERN "*.hpp")
+install(DIRECTORY ./ DESTINATION include/parser
          FILES_MATCHING PATTERN "*.h")

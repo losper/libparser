@@ -1,5 +1,8 @@
 #include "aeolus/aeolus.hpp"
 #include "../src/jsonexport.h"
+#include "../src/jsonvalue.hpp"
+#include "../src/jsonparser.hpp"
+#include "../../libplatform/src/platform.h"
 #include "string.h"
 
 
@@ -61,6 +64,40 @@ TEST(file,json) {
 	CHECK(2345 == jsonGetNumber(json, "port"));
 	CHECK(!strcmp("127.0.0.1",jsonGetString(json, "ip")));
 	jsonFree(json);
+}
+TEST(temp,json) {
+	jsonValue<> jv;
+	jsonParser<> jp(jv);
+	jp.parseBuff("{\"plugin\":[{\"hmi\":\"trr1\"},{\"hmi\":\"trr2\"},{\"hmi\":\"trr3\"}]}");
+	jsonValue<>& plg = jv.find("plugin");
+	char buf[20] = "trr";
+	int idx = 1;
+	if (plg.getType() == type_array) {
+		jsonValue<>::jsonArray plgs = plg.toArray();
+		for (jsonValue<>::jsonArray::iterator iter = plgs.begin(); iter != plgs.end(); iter++) {
+			sprintf(buf, "trr%d", idx++);
+			CHECK(!strcmp(buf, iter->find("hmi").tostring().c_str()));
+		}
+	}
+}
+TEST(tempfile,json) {
+	jsonValue<> jv;
+	jsonParser<> jp(jv);
+	char path[256];
+	strcpy(path,__FILE__);
+	*strrchr(path, '\\') = 0;
+	strcat(path, "/data/poseidon.json");
+	jp.parseFile(path);
+	char* name[] = {"hmi","script","cvip","simulator"};
+	int idx = 0;
+	if (jv.getType() == type_object) {
+		jsonValue<>::jsonObject& plgs = jv.toObject();
+		CHECK(plgs.size()!=0);
+		for (jsonValue<>::jsonObject::iterator iter = plgs.begin(); iter != plgs.end(); iter++) {
+			CHECK(iter->first.c_str(),name[idx] );
+			CHECK(iter->second.tostring().c_str(),"");
+		}
+	}
 }
 int main() {
 	TestResult tr;

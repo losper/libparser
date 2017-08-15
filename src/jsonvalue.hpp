@@ -309,6 +309,12 @@ public:
 		return *parent_ptr;
 
 	}
+	jsonObject& toObject() {
+		return *value.object;
+	}
+	jsonArray& toArray() {
+		return *value.array;
+	}
 private:
 	json_type type;
 	int len;

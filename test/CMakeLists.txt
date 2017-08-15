@@ -9,9 +9,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 ADD_EXECUTABLE(libparsertest simple.cpp)
 ADD_EXECUTABLE(libparserhpptest hpptest.cpp)
-target_link_libraries(libparsertest parser)
+target_link_libraries(libparsertest parser platform)
 
 if(MSVC)
 set(WINTEST libparsertest libparserhpptest)
-set_target_properties(${WINTEST} PROPERTIES FOLDER "tests/parser")
+set_target_properties(${WINTEST} PROPERTIES FOLDER "tests")
 endif()
