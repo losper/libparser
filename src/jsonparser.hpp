@@ -2,6 +2,8 @@
 #define __DPZ__JSONPARSER__HPP__
 
 #include "jsonValue.hpp"
+#include <string.h>
+
 enum jsonStatus {
 	json_parse_start,
 	json_parse_end,
@@ -23,13 +25,13 @@ enum jsonStatus {
 template<typename T=void>
 class jsonParser {
 public:
-	jsonParser::jsonParser(jsonValue<T> & obj) :root(obj)
+	jsonParser(jsonValue<T> & obj) :root(obj)
 	{
 		ptr = &root;
 		idx = 0;
 		state = json_parse_start;
 	}
-	int jsonParser::parseFile(const char* file)
+	int parseFile(const char* file)
 	{
 		FILE *fs = fopen(file, "rb");
 		char buf[1024];
@@ -61,7 +63,7 @@ public:
 		printf("parseFile ok\r\n");
 		return 0;
 	}
-	int jsonParser::parseBuff(const char* buf)
+	int parseBuff(const char* buf)
 	{
 		buff = buf;
 		while (buff[idx])
@@ -141,7 +143,7 @@ private:
 		}
 		
 	}
-	void jsonParser::json_parse_start_f() {
+	void json_parse_start_f() {
 		skip();
 		while (buff[idx])
 		{
@@ -161,11 +163,11 @@ private:
 		}
 		state = json_parse_end;
 	}
-	void jsonParser::json_parse_error_f()
+	void json_parse_error_f()
 	{
 		std::cout << "parse error!!!\r\n" << std::endl;
 	}
-	void jsonParser::json_name_start_f()
+	void json_name_start_f()
 	{
 		tmpname.clear();
 		const char* end = strchr(buff + idx, '"');
@@ -178,7 +180,7 @@ private:
 			state = json_parse_error;
 		}
 	}
-	void jsonParser::json_name_end_f()
+	void json_name_end_f()
 	{
 		skip();
 		while (buff[idx])
@@ -194,7 +196,7 @@ private:
 			idx++;
 		}
 	}
-	void jsonParser::json_split_start_f()
+	void json_split_start_f()
 	{
 		skip();
 		while (buff[idx])
@@ -217,13 +219,13 @@ private:
 			idx++;
 		}
 	}
-	void jsonParser::json_object_start_f()
+	void json_object_start_f()
 	{
 		state = json_parse_error;
 		switch (ptr->getType()) {
 		case type_array:
 		{
-			jsonValue<T>::jsonObject tobj;
+			typename jsonValue<T>::jsonObject tobj;
 			jsonValue<T> tval(tobj);
 			jsonValue<T>& arr = ptr->pushBack(tval);
 			if (arr.getType() != type_null) {
@@ -238,7 +240,7 @@ private:
 		break;
 		case type_object:
 		{
-			jsonValue<T>::jsonObject tobj;
+			typename jsonValue<T>::jsonObject tobj;
 			jsonValue<T> tval(tobj);
 			jsonValue<T>& obj = ptr->insert(tmpname, tval);
 			if (obj.getType() != type_null) {
@@ -252,7 +254,7 @@ private:
 		break;
 		case type_undefined:
 		{
-			jsonValue<T>::jsonObject tobj;
+			typename jsonValue<T>::jsonObject tobj;
 			jsonValue<T> tval(tobj);
 			*ptr = tval;
 
@@ -275,10 +277,10 @@ private:
 			idx++;
 		}
 	}
-	void jsonParser::json_object_end_f()
+	void json_object_end_f()
 	{
 	}
-	void jsonParser::json_string_start_f()
+	void json_string_start_f()
 	{
 
 		const char* end = strchr(buff + idx, '"');
@@ -300,7 +302,7 @@ private:
 		}
 
 	}
-	void jsonParser::json_number_start_f()
+	void json_number_start_f()
 	{
 		double num = 0;
 		state = json_parse_error;
@@ -328,13 +330,13 @@ private:
 			return;
 		}
 	}
-	void jsonParser::json_array_start_f()
+	void json_array_start_f()
 	{
 		state = json_parse_error;
 		switch (ptr->getType()) {
 		case type_array:
 		{
-			jsonValue<T>::jsonArray tarr;
+			typename jsonValue<T>::jsonArray tarr;
 			jsonValue<T> tval(tarr);
 			jsonValue<T>& arr = ptr->pushBack(tval);
 			if (arr.getType() != type_null) {
@@ -349,7 +351,7 @@ private:
 		break;
 		case type_object:
 		{
-			jsonValue<T>::jsonArray tarr;
+			typename jsonValue<T>::jsonArray tarr;
 			jsonValue<T> tval(tarr);
 			jsonValue<T>& obj = ptr->insert(tmpname, tval);
 			if (obj.getType() != type_null) {
@@ -363,7 +365,7 @@ private:
 		break;
 		case type_undefined:
 		{
-			jsonValue<T>::jsonArray tarr;
+			typename jsonValue<T>::jsonArray tarr;
 			jsonValue<T> tval(tarr);
 			*ptr = tval;
 
@@ -375,7 +377,7 @@ private:
 		state = json_split_start;
 		idx--;
 	}
-	void jsonParser::json_value_end_f()
+	void json_value_end_f()
 	{
 		state = json_parse_error;
 		switch (ptr->getType())
@@ -433,7 +435,7 @@ private:
 		}
 
 	}
-	void jsonParser::json_split_kv_f()
+	void json_split_kv_f()
 	{
 		state = json_parse_error;
 		skip();

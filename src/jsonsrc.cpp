@@ -97,7 +97,11 @@ int jsonSetNumber(void* json,const char* path,double value) {
 		tmp = jsonValue<>(value);
 		break;
 	case type_null:
-		obj.insert(path, jsonValue<>(value));
+		{
+			jsonValue<> tmp(value);
+			obj.insert(path, tmp);
+		}
+		//obj.insert(path, jsonValue<>(value));
 		break;
 	default:
 		return -2;
@@ -123,7 +127,9 @@ int jsonAddArray(void* json, const char* path) {
 	{
 	case type_null:
 		{
-			obj.insert(path, jsonValue<>(jsonValue<>::jsonArray()));
+			jsonValue<>::jsonArray tarr;
+			jsonValue<> tmp(tarr);
+			obj.insert(path, tmp);
 		}
 		break;
 	case type_array:

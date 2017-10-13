@@ -2,7 +2,7 @@
 #include "../src/jsonexport.h"
 #include "../src/jsonvalue.hpp"
 #include "../src/jsonparser.hpp"
-#include "../../libplatform/src/platform.h"
+//#include "../../libplatform/src/platform.h"
 #include "string.h"
 
 
@@ -94,8 +94,8 @@ TEST(tempfile,json) {
 		jsonValue<>::jsonObject& plgs = jv.toObject();
 		CHECK(plgs.size()!=0);
 		for (jsonValue<>::jsonObject::iterator iter = plgs.begin(); iter != plgs.end(); iter++) {
-			CHECK(iter->first.c_str(),name[idx] );
-			CHECK(iter->second.tostring().c_str(),"");
+			CHECK(!strcmp(name[idx],iter->first.c_str()) );
+			CHECK(!strcmp("",iter->second.tostring().c_str()));
 		}
 	}
 }

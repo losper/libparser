@@ -16,7 +16,7 @@ public:
 public:
 	jsonValue & operator=(const jsonValue & val)
 	{
-		// TODO: ÔÚ´Ë´¦²åÈë return Óï¾ä
+		// TODO: ï¿½Ú´Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ return ï¿½ï¿½ï¿½
 		freeStorge();
 		switch (val.type)
 		{
@@ -125,7 +125,7 @@ public:
 		(*value.array) = arr;
 		parent_ptr = 0;
 	}
-	jsonValue& insert(std::string name, jsonValue& val) {
+	jsonValue& insert(std::string name, const jsonValue& val) {
 		if (type == type_object)
 		{
 			//(*value.object).insert(std::pair<std::string,jsonValue&>(name,val));
@@ -135,7 +135,7 @@ public:
 			return nullvalue;
 		}
 	}
-	jsonValue& pushBack(jsonValue& val) {
+	jsonValue& pushBack(const jsonValue& val) {
 		if (type == type_array)
 		{
 			(*value.array).push_back(val);
@@ -150,7 +150,7 @@ public:
 		{
 			size_t pos = 0, start = 0;
 			std::string name;
-			jsonObject::iterator iter, end;
+			typename jsonObject::iterator iter, end;
 			while (pos != -1)
 			{
 				pos = path.find('.', start);
@@ -177,7 +177,7 @@ public:
 	jsonValue& at(std::string name) {
 		if (type == type_object)
 		{
-			jsonObject::iterator iter = value.object->find(name);
+			typename jsonObject::iterator iter = value.object->find(name);
 			if (iter != value.object->end()) {
 				return iter->second;
 			}
@@ -225,7 +225,7 @@ public:
 	{
 		switch (type) {
 		case type_array:
-			for (jsonArray::iterator iter = value.array->begin(); iter != value.array->end(); iter++) {
+			for (typename jsonArray::iterator iter = value.array->begin(); iter != value.array->end(); iter++) {
 				iter->freeStorge();
 			}
 			delete value.array;
@@ -233,7 +233,7 @@ public:
 			type = type_undefined;
 			break;
 		case type_object:
-			for (jsonObject::iterator iter = value.object->begin(); iter != value.object->end(); iter++) {
+			for (typename jsonObject::iterator iter = value.object->begin(); iter != value.object->end(); iter++) {
 				iter->second.freeStorge();
 			}
 			delete value.object;
@@ -272,7 +272,7 @@ public:
 		break;
 		case type_array:
 			ctx.append("[");
-			for (jsonArray::iterator iter = value.array->begin(); iter != value.array->end(); iter++)
+			for (typename jsonArray::iterator iter = value.array->begin(); iter != value.array->end(); iter++)
 			{
 				if (flag) { ctx += ","; }
 				else { flag = 1; }
@@ -282,7 +282,7 @@ public:
 			break;
 		case type_object:
 			ctx.append("{");
-			for (jsonObject::iterator iter = value.object->begin(); iter != value.object->end(); iter++)
+			for (typename jsonObject::iterator iter = value.object->begin(); iter != value.object->end(); iter++)
 			{
 				if (flag) { ctx += ","; }
 				else { flag = 1; }
